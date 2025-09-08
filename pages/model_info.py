@@ -5,7 +5,7 @@ from theme import apply_theme
 apply_theme()
 
 
-st.set_page_config(page_title="About Us", page_icon="👥", layout="wide")
+st.set_page_config(page_title="Info about the models", page_icon="👥", layout="wide")
 
 
 st.title("👥 Meet the Team")
@@ -14,9 +14,9 @@ st.write("We’re a small group of builders exploring what’s next in AI.")
 # --- Example team data (edit to yours) ---
 TEAM = [
     {
-        "name": "Dipali Ahirrao",
-        "role": "Team",
-        "bio": "Experienced software tester transitioning into data science. Passionate about data analysis and currently upskilling to pursue a career as a data analyst or data scientist.",
+        "name": "ResNet",
+        "role": "pre-trained",
+        "info": "Pre-trained model used by Simon",
         "photo": "https://picsum.photos/seed/hannah/300/300",
         "links": {
             "LinkedIn": "https://www.linkedin.com/in/hannahkiesow/",
