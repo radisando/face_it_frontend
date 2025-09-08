@@ -1,6 +1,9 @@
 import os
 import streamlit as st
+from theme import apply_theme
 
+
+apply_theme()
 
 # Define the base URI of the API
 #   - Potential sources are in `.streamlit/secrets.toml` or in the Secrets section
@@ -16,10 +19,26 @@ BASE_URI = BASE_URI if BASE_URI.endswith('/') else BASE_URI + '/'
 # Define the url to be used by requests.get to get a prediction (adapt if needed)
 url = BASE_URI + 'predict'
 
+
+import streamlit as st
+
+# Page setup
+st.set_page_config(
+    page_title="Face It",
+    page_icon="🤖",
+    layout="wide"
+)
+
+
+st.title("Face It: We've Got Feelings")
+st.write("A general look at where artificial intelligence is heading.")
+st.button("Click Me")
+
+
 # Just displaying the source for the API. Remove this in your final version.
 st.markdown(f"Working with {url}")
 
-st.markdown("Now, the rest is up to you. Start creating your page.")
+st.markdown("Face it team. Now, the rest is up to you and the team. Start creating your page.")
 
 
 # TODO: Add some titles, introduction, ...
