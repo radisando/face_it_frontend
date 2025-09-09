@@ -26,7 +26,7 @@ uploaded = st.file_uploader("Upload a face image", type=["jpg", "jpeg", "png"])
 if uploaded:
     st.image(uploaded, caption="Preview", use_container_width=False)
 
-    if st.button("🔍 Identify Emotion"):
+    if st.button("Identify Emotion!"):
         try:
             # file bytes + content type
             img_bytes = uploaded.getvalue()
