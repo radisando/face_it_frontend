@@ -10,7 +10,7 @@ apply_theme()
 st.set_page_config(page_title="Face It", page_icon="🤖", layout="wide")
 
 st.title("Face It: We've Got Feelings")
-st.write("Upload an image and let our model guess the emotion.")
+st.write("Upload an image of a face and let our model guess the emotion.")
 
 # ---------- API URL setup ----------
 BASE_URI = os.getenv("CLOUD_API_URI") or st.secrets.get("cloud_api_uri") or "http://localhost:8000"
@@ -18,7 +18,7 @@ if not BASE_URI.endswith("/"):
     BASE_URI += "/"
 PRED_ENDPOINT = BASE_URI + "predict"
 
-st.caption(f"🔗 Working with API at: {PRED_ENDPOINT}")  # dev only, remove in prod
+
 
 # ---------- File uploader ----------
 uploaded = st.file_uploader("Upload a face image", type=["jpg", "jpeg", "png"])
@@ -39,7 +39,7 @@ if uploaded:
 
             data = r.json()
 
-            # Your FastAPI returns {label, confidence, probabilities}
+            # FastAPI returns {label, confidence, probabilities}
             label = data.get("label") or data.get("emotion", "unknown")
             conf = data.get("confidence")
             probs = data.get("probabilities") or data.get("scores") or {}
@@ -60,3 +60,8 @@ if uploaded:
             st.error(f"API call failed: {e}")
 
 st.markdown("Tip: please upload a clear, front-facing picture of a face.")
+
+
+
+
+st.caption(f"🔗 Working with API at: {PRED_ENDPOINT}")  # dev only, remove in prod
