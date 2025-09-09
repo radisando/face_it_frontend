@@ -13,14 +13,10 @@ st.title("Face It: We've Got Feelings")
 st.write("Upload an image and let our model guess the emotion.")
 
 # ---------- API URL setup ----------
-# Prefer env var, then Streamlit secrets, then localhost
-API_URL = (
-    os.environ.get("API_URL")
-    or st.secrets.get("cloud_api_uri")
-    or "http://localhost:8000"
-)
-API_URL = API_URL.rstrip("/")
-PRED_ENDPOINT = f"{API_URL}/predict"
+BASE_URI = os.getenv("CLOUD_API_URI") or st.secrets.get("cloud_api_uri") or "http://localhost:8000"
+if not BASE_URI.endswith("/"):
+    BASE_URI += "/"
+PRED_ENDPOINT = BASE_URI + "predict"
 
 st.caption(f"🔗 Working with API at: {PRED_ENDPOINT}")  # dev only, remove in prod
 
