@@ -10,8 +10,6 @@ apply_theme()
 st.set_page_config(page_title="Face It", page_icon="🤖", layout="wide")
 
 st.title("Face It: We've Got Feelings")
-st.image("assets/faceit_logo.png", caption="Our AI mascot 🤖", use_container_width=False)
-
 
 
 st.header("👋 Hey there!")
