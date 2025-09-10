@@ -14,3 +14,7 @@ requests
 # Data science
 pillow==10.4.0
 pandas==2.2.3
+matplotlib
+seaborn
+bokeh
+streamlit-lottie
