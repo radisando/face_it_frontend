@@ -1,86 +1,152 @@
 import streamlit as st
 from theme import apply_theme
+import base64
 
-
+# Apply your custom theme
 apply_theme()
 
-
+# Page config
 st.set_page_config(page_title="About Us", page_icon="👥", layout="wide")
-
 
 st.title("👥 Meet the Team")
 st.write("We’re a small group of builders exploring what’s next in AI.")
 
-# --- Example team data (edit to yours) ---
+# --- Team Data ---
 TEAM = [
     {
-        "name": "Dipali Ahirrao",
-        "role": "Team",
-        "bio": "Experienced software tester transitioning into data science. Passionate about data analysis and currently upskilling to pursue a career as a data analyst or data scientist.",
-        "photo": "https://picsum.photos/seed/hannah/300/300",
+        "name": "Hannah Kiesow-Berger",
+        "role": "Team Leader",
+        "bio": "Previously a computational neuroscientist, now learning coding. After completing the Le Wagon bootcamp, I aim to find a job in data science with a focus on health and well-being.",
+        "photo": "media/TeamPics/hannah.png",
         "links": {
             "LinkedIn": "https://www.linkedin.com/in/hannahkiesow/",
-            "Email": "mailto:hannahkiesow@gmail.com"
+            "GitHub": "https://github.com/hannahkiesow"
         }
     },
     {
         "name": "Simon Tilman Finzel",
-        "role": "team",
+        "role": "Team Member",
         "bio": "I began my career with an apprenticeship as an electrician and later earned a Master’s degree in Architecture. Most recently, I worked as a Data Operations Specialist, where I developed a strong interest in data-driven solutions. I’m now focused on deepening my skills in Data Science and Machine Learning to bridge my technical background with analytical and AI-powered approaches to problem-solving.",
-        "photo": "https://picsum.photos/seed/alex/300/300",
+        "photo": "media/TeamPics/simon.png",
         "links": {
-            "GitHub": "https://github.com/",
-            "Twitter": "https://twitter.com/"
+            "LinkedIn": "https://www.linkedin.com/in/simon-finzel/",
+            "GitHub": "https://github.com/4t4r4xi448"
         }
+    },
+    {
+    "name": "Anna Sporre",
+    "role": "Team Member",
+    "bio": "I've been living in France for over 5 years, currently working as a senior insight analyst. I have 8+ years experience in consumer insights and now want to develop my skills in data science for more technical roles.",
+    "photo": "media/TeamPics/anna.png",
+    "links": {
+        "LinkedIn": "https://www.linkedin.com/in/annasporre/",
+        "GitHub": "https://github.com/anniquitita"
+    }
     },
     {
         "name": "Rafael Sandoval",
-        "role": "team",
-        "bio": "Bom dia! 👋 I’m Rafa, a visual analytics professional based in Germany. Overall I turn complex data - and sometimes boring - into useful insights; with reporting, dashboards, or data-driven storytelling. Looking for a Data & AI roles within Germany.",
-        "photo": "https://picsum.photos/seed/maya/300/300",
+        "role": "Team Member",
+        "bio": "Bom dia! 👋 I’m Rafa, a visual analytics professional based in Germany. I turn complex data into useful insights with reporting, dashboards, or data-driven storytelling. Looking for a Data & AI role within Germany.",
+        "photo": "media/TeamPics/rafa.png",
         "links": {
-            "Portfolio": "https://example.com",
-            "Dribbble": "https://dribbble.com/"
+            "LinkedIn": "https://www.linkedin.com/in/rafa-sandoval/",
+            "GitHub": "https://github.com/radisando"
         }
     },
     {
-        "name": "Anna Sporre",
-        "role": "team",
-        "bio": "My name is Anna, I'm from Sweden. I've been living in France for more than 5 years, starting my life in Paris during Covid and later moved down to the southwest, been living in Biarritz for 3,5 years where I spend my free time surfing, hiking, climbing and enjoying culture and food in France or a quick trip to Spain for some tapas in San Sebastian. I'm currently working as a senior insight analyst, mostly working with social listening. I've been working in various consumer insights role for over 8 years and now I'm looking to develop my skills in data science to access more technical roles within data analytics and data science.",
-        "photo": "https://picsum.photos/seed/alex/300/300",
+        "name": "Dipali Ahirrao",
+        "role": "Team Member",
+        "bio": "Experienced software tester transitioning into data science. Passionate about data analysis and currently upskilling to pursue a career as a data analyst or data scientist.",
+        "photo": "media/TeamPics/dipali.png",
         "links": {
-            "GitHub": "https://github.com/",
-            "Twitter": "https://twitter.com/"
-        }
-    },
-    {
-        "name": "Hannah Kiesow-Berger",
-        "role": "team",
-        "bio": "I was previously a computational neuroscientist, but I want to refresh and learn more coding. After completion of the Le Wagon bootcamp, I plan to look for a job in data science, with a focus in health and well-being. :)",
-        "photo": "https://picsum.photos/seed/maya/300/300",
-        "links": {
-            "Portfolio": "https://example.com",
-            "Dribbble": "https://dribbble.com/"
+            "LinkedIn": "www.linkedin.com/in/dipali-jundre",
+            "GitHub": "https://github.com/Deepali15091989"
         }
     },
 ]
 
-# --- Render as responsive cards ---
-cols_per_row = 3
-for i in range(0, len(TEAM), cols_per_row):
-    row = TEAM[i:i+cols_per_row]
-    cols = st.columns(len(row))
-    for col, member in zip(cols, row):
-        with col:
-            st.markdown('<div class="team-card">', unsafe_allow_html=True)
-            st.image(member["photo"], use_container_width=True)
-            st.subheader(member["name"])
-            st.markdown(f"<div class='team-role'>{member['role']}</div>", unsafe_allow_html=True)
-            st.write(member["bio"])
-            # links
-            link_md = " ".join([f"[{label}]({url})" for label, url in member["links"].items()])
-            st.markdown(f"<div class='team-links'>{link_md}</div>", unsafe_allow_html=True)
-            st.markdown("</div>", unsafe_allow_html=True)
+# --- Global CSS styling ---
+st.markdown("""
+    <style>
+    .team-card-container {
+        display: flex;
+        align-items: center;
+        background-color: transparent;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .team-card-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 4px 4px 15px rgba(0,0,0,0.2);
+    }
+    .team-photo {
+        width: 150px;  /* Adjusted size */
+        height: 150px; /* Adjusted size */
+        border-radius: 20px;
+        object-fit: cover;
+        margin-right: 20px;
+    }
+    .team-content {
+        flex-grow: 1;
+    }
+    .team-role {
+        font-size: 0.9rem;
+        color: white;
+        margin-bottom: 10px;
+        font-style: italic;
+    }
+    .team-name {
+    color: white;
+    }
+    .team-links a {
+        margin-right: 10px;
+        text-decoration: none;
+        font-weight: 500;
+        color: #ADD8E6;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-# Optional back link to Home
-st.page_link("app.py", label="Back to the home page")
+# --- Render each member as a single HTML card ---
+
+
+for member in TEAM:
+    link_html = ""
+    for label, url in member["links"].items():
+        if not url.startswith("http"):
+            url = "https://" + url
+
+        # Use logos with white background
+        if label.lower() == "linkedin":
+            icon_url = "https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png"
+        else:  # GitHub
+            icon_url = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+
+        # Add icon with link
+        link_html += f'''
+        <a href="{url}" target="_blank" style="margin-right:10px;">
+            <img src="{icon_url}" width="20px" height="20px" style="vertical-align:middle; background:white; border-radius:3px; padding:2px;"> {label}
+        </a>'''
+
+    # Convert image to base64
+    import base64
+    def img_to_base64(path):
+        with open(path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    img_base64 = img_to_base64(member['photo'])
+
+    card_html = f"""
+    <div class="team-card-container" style="text-align:left; flex-direction: row;">
+    <img src="data:image/png;base64,{img_base64}" class="team-photo">
+        <div class="team-content">
+            <h3 class="team-name">{member['name']}</h3>
+            <div class='team-role'>{member['role']}</div>
+            <p>{member['bio']}</p>
+            <div class='team-links'>{link_html}</div>
+        </div>
+    </div>
+    """
+    st.markdown(card_html, unsafe_allow_html=True)
