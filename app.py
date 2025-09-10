@@ -10,7 +10,7 @@ apply_theme()
 st.set_page_config(page_title="Face It", page_icon="🤖", layout="wide")
 
 st.title("Face It: We've Got Feelings")
-st.write("Upload an image of a face and let our model guess the emotion.")
+st.write("Hello and welcome! We trained an AI model to be able to predict the emotion from a human face. Give it a try: upload an image of a face and let our model guess the emotion.")
 
 # ---------- API URL setup ----------
 BASE_URI = os.getenv("CLOUD_API_URI") or st.secrets.get("cloud_api_uri") or "http://localhost:8000"
@@ -51,8 +51,29 @@ if uploaded:
                 # show probabilities as a bar chart if present
                 if isinstance(probs, dict) and probs:
                     import pandas as pd
-                    df = pd.Series(probs).sort_values(ascending=False).to_frame("probability")
-                    st.bar_chart(df)
+                    import matplotlib.pyplot as plt
+
+                    # convert to Series and keep top 3
+                    series = pd.Series(probs).sort_values(ascending=False).head(3)
+
+                    # layout: bar chart left, pie chart right
+                    col1, col2 = st.columns(2)
+
+                    with col1:
+                        st.subheader("Top 3 Probabilities (Bar)")
+                        st.bar_chart(series)
+
+                    with col2:
+                        st.subheader("Top 3 Probabilities (Pie)")
+                        fig, ax = plt.subplots()
+                        ax.pie(series, labels=series.index, autopct="%.1f%%", startangle=90)
+                        ax.axis("equal")  # equal aspect ratio makes it a circle
+                        st.pyplot(fig)
+
+                #if isinstance(probs, dict) and probs:
+                #    import pandas as pd
+                #    df = pd.Series(probs).sort_values(ascending=False).to_frame("probability")
+                #    st.bar_chart(df)
                 else:
                     st.json(data)  # fallback: show raw payload
 
