@@ -9,12 +9,17 @@ from theme import apply_theme
 apply_theme()
 st.set_page_config(page_title="Face It", page_icon="🤖", layout="wide")
 
+st.markdown(
+    "<h1 style='text-align: center;'>Face It: We've Got Feelings</h1>",
+    unsafe_allow_html=True
+)
 
-st.title("😄😢🤢😡😲Face It: We've Got Feelings😄😢🤢😡😲")
+st.markdown(
+    "<h1 style='text-align: center;'>😊😢🤢😡😨😲😐🥳😖🫣🤨</h1>",
+    unsafe_allow_html=True
+)
+
 st.image("media/banner.png", use_container_width=True)
-
-
-
 
 st.header("👋 Hey there!")
 st.write("We trained a slightly over-confident AI that thinks it can read your emotions 😏.")
@@ -22,7 +27,7 @@ st.write(" ")
 st.write(" ")
 
 st.header("All you have to do is:")
-st.write("📸 Upload a face pic(front-facing, clear photo)")
+st.write("📸 Upload a face pic (front-facing, clear photo)")
 st.write("👉 Sit back and let our model take its best guess!")
 
 # ---------- API URL setup ----------
@@ -96,12 +101,11 @@ if uploaded:
                 """
                 st.markdown(badge_html, unsafe_allow_html=True)
 
-                # --- Show probabilities as bar + pie chart (top 3) ---
+                # --- Show probabilities as bar chart (top 3 only) ---
                 if isinstance(probs, dict) and probs:
                     import pandas as pd
                     import matplotlib.pyplot as plt
                     import seaborn as sns
-                    import numpy as np
 
                     # Data
                     series = pd.Series(probs).sort_values(ascending=False).head(3)
@@ -112,65 +116,38 @@ if uploaded:
                     PALETTE = ["#7C3AED", "#EC4899", "#F59E0B"]
                     sns.set_theme(style="whitegrid", font_scale=1.0)
 
-                    col1, col2 = st.columns(2)
-
                     # --- Bar chart ---
-                    with col1:
-                        fig, ax = plt.subplots(figsize=(6, 4), facecolor=BG_COLOR)
-                        ax.set_facecolor(BG_COLOR)
+                    fig, ax = plt.subplots(figsize=(6, 4), facecolor=BG_COLOR)
+                    ax.set_facecolor(BG_COLOR)
 
-                        sns.barplot(
-                            x=series.index,
-                            y=series.values,
-                            palette=PALETTE[:len(series)],
-                            ax=ax,
-                            edgecolor="none"
-                        )
-                        ax.set_ylim(0, 1)
-                        ax.set_xlabel("")
-                        ax.set_ylabel("Probability", color=TEXT_COLOR)
-                        ax.set_title("Top 3 Predicted Emotions", color=TEXT_COLOR, pad=12)
+                    sns.barplot(
+                        x=series.index,
+                        y=series.values,
+                        palette=PALETTE[:len(series)],
+                        ax=ax,
+                        edgecolor="none"
+                    )
+                    ax.set_ylim(0, 1)
+                    ax.set_xlabel("")
+                    ax.set_ylabel("Probability", color=TEXT_COLOR)
+                    ax.set_title("Top 3 Predicted Emotions", color=TEXT_COLOR, pad=12)
 
-                        ax.tick_params(colors=TEXT_COLOR)
-                        for spine in ax.spines.values():
-                            spine.set_visible(False)
+                    ax.tick_params(colors=TEXT_COLOR)
+                    for spine in ax.spines.values():
+                        spine.set_visible(False)
 
-                        ax.grid(axis="y", linestyle=":", linewidth=0.8, color='white', alpha=0.2)
+                    ax.grid(axis="y", linestyle=":", linewidth=0.8, color='white', alpha=0.2)
 
-                        for p in ax.patches:
-                            ax.annotate(f"{p.get_height():.1%}",
-                                        (p.get_x() + p.get_width()/2, p.get_height()),
-                                        ha="center", va="bottom", xytext=(0, 6),
-                                        textcoords="offset points", color=TEXT_COLOR)
+                    for p in ax.patches:
+                        ax.annotate(f"{p.get_height():.1%}",
+                                    (p.get_x() + p.get_width()/2, p.get_height()),
+                                    ha="center", va="bottom", xytext=(0, 6),
+                                    textcoords="offset points", color=TEXT_COLOR)
 
-                        st.pyplot(fig, clear_figure=True)
-
-                    # --- Donut pie ---
-                    with col2:
-                        fig2, ax2 = plt.subplots(figsize=(6, 4), facecolor=BG_COLOR)
-                        ax2.set_facecolor(BG_COLOR)
-
-                        wedges, texts, autotexts = ax2.pie(
-                            series.values,
-                            labels=series.index,
-                            autopct="%.1f%%",
-                            startangle=90,
-                            pctdistance=0.78,
-                            labeldistance=1.05,
-                            colors=PALETTE[:len(series)],
-                            textprops={"color": TEXT_COLOR}
-                        )
-                        centre = plt.Circle((0, 0), 0.55, fc=BG_COLOR)
-                        ax2.add_artist(centre)
-                        ax2.axis("equal")
-                        ax2.set_title("Top 3 Predicted Emotions", color=TEXT_COLOR, pad=12)
-
-                        st.pyplot(fig2, clear_figure=True)
+                    st.pyplot(fig, clear_figure=True)
 
                 else:
                     st.json(data)  # fallback: show raw payload
 
             except requests.exceptions.RequestException as e:
                 st.error(f"API call failed: {e}")
-
-#st.caption(f"🔗 Working with API at: {PRED_ENDPOINT}")  # dev only, remove in prod
