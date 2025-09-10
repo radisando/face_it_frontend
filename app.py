@@ -27,37 +27,38 @@ if uploaded:
     st.image(uploaded, caption="Preview", use_container_width=False)
 
     if st.button("Identify Emotion!"):
-        try:
-            # file bytes + content type
-            img_bytes = uploaded.getvalue()
-            content_type = uploaded.type or "image/jpeg"
+        img_bytes = uploaded.getvalue()
+        content_type = uploaded.type or "image/jpeg"
 
-            # call the API
-            files = {"file": (uploaded.name or "image.jpg", img_bytes, content_type)}
-            r = requests.post(PRED_ENDPOINT, files=files, timeout=30)
-            r.raise_for_status()
+        with st.spinner("🤖 Running the model… please wait!"):
+            try:
+                # call the API
+                files = {"file": (uploaded.name or "image.jpg", img_bytes, content_type)}
+                r = requests.post(PRED_ENDPOINT, files=files, timeout=30)
+                r.raise_for_status()
 
-            data = r.json()
+                data = r.json()
 
-            # FastAPI returns {label, confidence, probabilities}
-            label = data.get("label") or data.get("emotion", "unknown")
-            conf = data.get("confidence")
-            probs = data.get("probabilities") or data.get("scores") or {}
+                # FastAPI returns {label, confidence, probabilities}
+                label = data.get("label") or data.get("emotion", "unknown")
+                conf = data.get("confidence")
+                probs = data.get("probabilities") or data.get("scores") or {}
 
-            # show result
-            conf_txt = f" ({conf:.1%})" if isinstance(conf, (int, float)) else ""
-            st.success(f"Predicted emotion: **{label}**{conf_txt}")
+                # show result
+                conf_txt = f" ({conf:.1%})" if isinstance(conf, (int, float)) else ""
+                st.success(f"Predicted emotion: **{label}**{conf_txt}")
 
-            # show probabilities as a bar chart if present
-            if isinstance(probs, dict) and probs:
-                import pandas as pd
-                df = pd.Series(probs).sort_values(ascending=False).to_frame("probability")
-                st.bar_chart(df)
-            else:
-                st.json(data)  # fallback: show raw payload
+                # show probabilities as a bar chart if present
+                if isinstance(probs, dict) and probs:
+                    import pandas as pd
+                    df = pd.Series(probs).sort_values(ascending=False).to_frame("probability")
+                    st.bar_chart(df)
+                else:
+                    st.json(data)  # fallback: show raw payload
 
-        except requests.exceptions.RequestException as e:
-            st.error(f"API call failed: {e}")
+            except requests.exceptions.RequestException as e:
+                st.error(f"API call failed: {e}")
+
 
 st.markdown("Tip: please upload a clear, front-facing picture of a face.")
 
