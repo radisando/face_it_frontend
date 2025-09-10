@@ -1,86 +1,181 @@
-import streamlit as st
-from theme import apply_theme
 
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from theme import apply_theme
+import os
+from PIL import Image
 
 apply_theme()
 
+# -------------------
+# PAGE CONFIG
+# -------------------
+st.set_page_config(page_title="ML Model Overview", layout="wide")
 
-st.set_page_config(page_title="Info about the models", page_icon="👥", layout="wide")
+st.title("Face It : Model Insights")
+st.markdown("Built on **FER-2013 Dataset** to classify 7 universal emotions (Ekman & Friesen, 1971).")
 
+# -------------------
+# MAIN TABS
+# -------------------
+tab_emotions, tab_dataset, tab_data_journey, tab_results, tab_explainability, tab_future = st.tabs(
+    ["😊 Introduction", "📊 Dataset", "🛠️ Data Journey", "📈 Results", "🔍 Explainability", "🚀 Future Work"]
+)
 
-st.title("👥 Meet the Team")
-st.write("We’re a small group of builders exploring what’s next in AI.")
+# -------------------
+# TAB 1: EMOTIONS
+# -------------------
+with tab_emotions:
+    st.header("😊 7 Universal Emotions")
+    emotions = {
+        "Happy": "😊",
+        "Sad": "😢",
+        "Fear": "😱",
+        "Anger": "😡",
+        "Disgust": "🤢",
+        "Surprise": "😲",
+        "Neutral": "😐"
+    }
+    cols = st.columns(4)
+    for i, (emo, icon) in enumerate(emotions.items()):
+        with cols[i % 4]:
+            st.markdown(f"### {icon} {emo}")
+    st.markdown("---")
 
-# --- Example team data (edit to yours) ---
-TEAM = [
-    {
-        "name": "ResNet",
-        "role": "pre-trained",
-        "info": "Pre-trained model used by Simon",
-        "photo": "https://picsum.photos/seed/hannah/300/300",
-        "links": {
-            "LinkedIn": "https://www.linkedin.com/in/hannahkiesow/",
-            "Email": "mailto:hannahkiesow@gmail.com"
-        }
-    },
-    {
-        "name": "Simon Tilman Finzel",
-        "role": "team",
-        "bio": "I began my career with an apprenticeship as an electrician and later earned a Master’s degree in Architecture. Most recently, I worked as a Data Operations Specialist, where I developed a strong interest in data-driven solutions. I’m now focused on deepening my skills in Data Science and Machine Learning to bridge my technical background with analytical and AI-powered approaches to problem-solving.",
-        "photo": "https://picsum.photos/seed/alex/300/300",
-        "links": {
-            "GitHub": "https://github.com/",
-            "Twitter": "https://twitter.com/"
-        }
-    },
-    {
-        "name": "Rafael Sandoval",
-        "role": "team",
-        "bio": "Bom dia! 👋 I’m Rafa, a visual analytics professional based in Germany. Overall I turn complex data - and sometimes boring - into useful insights; with reporting, dashboards, or data-driven storytelling. Looking for a Data & AI roles within Germany.",
-        "photo": "https://picsum.photos/seed/maya/300/300",
-        "links": {
-            "Portfolio": "https://example.com",
-            "Dribbble": "https://dribbble.com/"
-        }
-    },
-    {
-        "name": "Anna Sporre",
-        "role": "team",
-        "bio": "My name is Anna, I'm from Sweden. I've been living in France for more than 5 years, starting my life in Paris during Covid and later moved down to the southwest, been living in Biarritz for 3,5 years where I spend my free time surfing, hiking, climbing and enjoying culture and food in France or a quick trip to Spain for some tapas in San Sebastian. I'm currently working as a senior insight analyst, mostly working with social listening. I've been working in various consumer insights role for over 8 years and now I'm looking to develop my skills in data science to access more technical roles within data analytics and data science.",
-        "photo": "https://picsum.photos/seed/alex/300/300",
-        "links": {
-            "GitHub": "https://github.com/",
-            "Twitter": "https://twitter.com/"
-        }
-    },
-    {
-        "name": "Hannah Kiesow-Berger",
-        "role": "team",
-        "bio": "I was previously a computational neuroscientist, but I want to refresh and learn more coding. After completion of the Le Wagon bootcamp, I plan to look for a job in data science, with a focus in health and well-being. :)",
-        "photo": "https://picsum.photos/seed/maya/300/300",
-        "links": {
-            "Portfolio": "https://example.com",
-            "Dribbble": "https://dribbble.com/"
-        }
-    },
-]
+    st.header("Project Overview")
+    st.markdown("""
+    **Basic Idea:**
+    - Capture a face image from the user or a dataset.
+    - Preprocess the image (grayscale, resize, normalize).
+    - Feed the image to a trained **CNN** or **pretrained ResNet50**.
+    - Predict emotion with confidence score.
+    - Explain predictions with **Grad-CAM** & **SHAP**.
 
-# --- Render as responsive cards ---
-cols_per_row = 3
-for i in range(0, len(TEAM), cols_per_row):
-    row = TEAM[i:i+cols_per_row]
-    cols = st.columns(len(row))
-    for col, member in zip(cols, row):
-        with col:
-            st.markdown('<div class="team-card">', unsafe_allow_html=True)
-            st.image(member["photo"], use_container_width=True)
-            st.subheader(member["name"])
-            st.markdown(f"<div class='team-role'>{member['role']}</div>", unsafe_allow_html=True)
-            st.write(member["bio"])
-            # links
-            link_md = " ".join([f"[{label}]({url})" for label, url in member["links"].items()])
-            st.markdown(f"<div class='team-links'>{link_md}</div>", unsafe_allow_html=True)
-            st.markdown("</div>", unsafe_allow_html=True)
+    **Goal:**
+    - Build a system that is **accurate, fair, and explainable**.
+    - Reduce misclassifications, especially subtle emotions like Fear & Disgust.
+    - Deploy for real-time apps/web.
+    """)
+    st.markdown("---")
 
-# Optional back link to Home
-st.page_link("app.py", label="Back to the home page")
+# -------------------
+# TAB 2: DATASET
+# -------------------
+with tab_dataset:
+    st.header("📊 Dataset Information")
+    st.markdown("""
+    **Dataset Name:** FER 2013 Dataset with balanced images for Disgust
+    **Format:** PNG/JPG
+    **Emotion Classes:** Happiness, Sadness, Fear, Anger, Disgust, Surprise, Neutral
+    """)
+    dataset_image_path = "media/Images/Dataset.png"
+    if os.path.exists(dataset_image_path):
+        img = Image.open(dataset_image_path)
+        max_width = 1000
+        w_percent = (max_width / float(img.size[0]))
+        h_size = int((float(img.size[1]) * float(w_percent)))
+        img = img.resize((max_width, h_size))
+        st.image(img, caption="Sample Dataset Image", use_container_width=False)
+    else:
+        st.warning(f"Dataset image not found: {dataset_image_path}")
+    st.info("✅ Balanced data ensures fairness and reduces misclassifications.")
+
+# -------------------
+# TAB 3: DATA JOURNEY
+# -------------------
+with tab_data_journey:
+    st.header("🛠️ The Data Journey Blueprint")
+    data_journey_img_path = "media/Images/Blueprint1.png"
+    if os.path.exists(data_journey_img_path):
+        img = Image.open(data_journey_img_path)
+
+        # Resize image manually
+        max_width = 1000  # desired width
+        w_percent = (max_width / float(img.size[0]))
+        h_size = int((float(img.size[1]) * float(w_percent)))
+        img = img.resize((max_width, h_size))
+
+        st.image(img, caption="Data Journey Overview", use_container_width=False)
+    else:
+        st.warning(f"Data Journey image not found: {data_journey_img_path}")
+    st.markdown("---")
+
+# -------------------
+# TAB 4: RESULTS
+# -------------------
+with tab_results:
+    st.header("📈 Model Performance")
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Overall Accuracy", "69%")
+    col2.metric("Disgust", "92%")
+    col3.metric("Happy", "88%")
+    col4.metric("Fear", "Low Recall")
+    st.markdown("---")
+
+# -------------------
+# TAB 5: MODEL EXPLAINABILITY
+# -------------------
+with tab_explainability:
+    st.header("🔍 Model Explainability")
+    st.markdown("""
+    We used a **pretrained ResNet50 model** to recognize facial emotions.
+    Interpretability techniques help us see which facial regions influenced predictions.
+    """)
+
+    tab_grad, tab_shap, tab_cm = st.tabs(["Grad-CAM", "SHAP Values", "Confusion Matrix"])
+
+    # Grad-CAM
+    with tab_grad:
+        st.markdown("**Grad-CAM** highlights the facial regions critical for the model’s prediction.")
+        gradcam_img_path = "media/Images/Gradcam.png"
+        if os.path.exists(gradcam_img_path):
+            img = Image.open(gradcam_img_path)
+            max_width = 1000
+            w_percent = (max_width / float(img.size[0]))
+            h_size = int((float(img.size[1]) * float(w_percent)))
+            img = img.resize((max_width, h_size))
+            st.image(img, caption="Grad-CAM Example", use_container_width=False)
+        else:
+            st.warning(f"Image not found: {gradcam_img_path}")
+
+    # SHAP Values
+    with tab_shap:
+        st.markdown("**SHAP values** quantify pixel-level contributions to predictions.")
+        shap_img_path = "media/Images/SHAP.png"
+        if os.path.exists(shap_img_path):
+            img = Image.open(shap_img_path)
+            max_width = 300
+            w_percent = (max_width / float(img.size[0]))
+            h_size = int((float(img.size[1]) * float(w_percent)))
+            img = img.resize((max_width, h_size))
+            st.image(img, caption="SHAP Example", use_container_width=False)
+        else:
+            st.warning(f"Image not found: {shap_img_path}")
+
+    # Confusion Matrix
+    with tab_cm:
+        st.markdown("**Confusion Matrix** shows misclassifications per emotion class.")
+        cm_img_path = "media/Images/Confusion Matrix.png"
+        if os.path.exists(cm_img_path):
+            img = Image.open(cm_img_path)
+            max_width = 1000
+            w_percent = (max_width / float(img.size[0]))
+            h_size = int((float(img.size[1]) * float(w_percent)))
+            img = img.resize((max_width, h_size))
+            st.image(img, caption="Confusion Matrix", use_container_width=False)
+        else:
+            st.warning(f"Image not found: {cm_img_path}")
+
+# -------------------
+# TAB 6: FUTURE WORK
+# -------------------
+with tab_future:
+    st.header("🚀 Future Work")
+    st.markdown("""
+    - Improve recall for **Fear** and other low-performing emotions
+    - Explore **Vision Transformers**
+    - Build **mobile/web app deployment**
+    - Continue reducing bias & improving fairness
+    """)
