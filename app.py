@@ -136,7 +136,7 @@ with col_right:
                 )
                 ax.set_ylim(0, 1)
                 ax.set_xlabel("")
-                ax.set_ylabel("Probability", color=TEXT_COLOR)
+                ax.set_ylabel("Probability of emotion", color=TEXT_COLOR)
                 ax.set_title("Top 3 Predicted Emotions", color=TEXT_COLOR, pad=12)
 
                 ax.tick_params(colors=TEXT_COLOR)
