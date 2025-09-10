@@ -9,8 +9,9 @@ from theme import apply_theme
 apply_theme()
 st.set_page_config(page_title="Face It", page_icon="🤖", layout="wide")
 
+
 st.markdown(
-    "<h1 style='text-align: center;'>Face It: We've Got Feelings</h1>",
+    "<h1 style='text-align: center; font-size: 60px;'>Face It: We've Got Feelings</h1>",
     unsafe_allow_html=True
 )
 
@@ -19,7 +20,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.image("media/banner.png", use_container_width=True)
+
 
 st.header("👋 Hey there!")
 st.write("We trained a slightly over-confident AI that thinks it can read your emotions 😏.")
@@ -40,13 +41,20 @@ st.markdown("⚡ Tip: No sunglasses, masks, or ninja disguises 🥷 (our AI is g
 st.write(" ")
 st.write(" ")
 
-# ---------- File uploader ----------
-uploaded = st.file_uploader("Upload here!", type=["jpg", "jpeg", "png"])
 
-if uploaded:
-    st.image(uploaded, caption="Preview", use_container_width=False)
+# ---------- File uploader + results side by side ----------
+col_left, col_right = st.columns([1, 2])  # adjust width ratio
 
-    if st.button("Identify Emotion!"):
+with col_left:
+    uploaded = st.file_uploader("Upload here!", type=["jpg", "jpeg", "png"])
+    run_prediction = False
+    if uploaded:
+        st.image(uploaded, caption="Preview", use_container_width=False)
+        if st.button("Identify Emotion!"):
+            run_prediction = True
+
+with col_right:
+    if uploaded and run_prediction:
         img_bytes = uploaded.getvalue()
         content_type = uploaded.type or "image/jpeg"
 
@@ -64,15 +72,15 @@ if uploaded:
                 conf = data.get("confidence")
                 probs = data.get("probabilities") or data.get("scores") or {}
 
-                # --- Emotion styles: text color + translucent background ---
+                # --- Emotion styles ---
                 EMOTION_STYLES = {
-                    "happy":    {"fg": "#111111", "bg": "#FACC1533"},  # yellow bg
-                    "sad":      {"fg": "#DBEAFE", "bg": "#3B82F633"},  # blue
-                    "angry":    {"fg": "#FEE2E2", "bg": "#EF444433"},  # red
-                    "fear":     {"fg": "#EDE9FE", "bg": "#8B5CF633"},  # violet
-                    "surprise": {"fg": "#FCE7F3", "bg": "#EC489933"},  # pink
-                    "disgust":  {"fg": "#ECFDF5", "bg": "#10B98133"},  # green
-                    "neutral":  {"fg": "#F3F4F6", "bg": "#9CA3AF33"},  # gray
+                    "happy":    {"fg": "#FFFFFF", "bg": "#FACC1533"},
+                    "sad":      {"fg": "#FFFFFF", "bg": "#3B82F633"},
+                    "angry":    {"fg": "#FFFFFF", "bg": "#EF444433"},
+                    "fear":     {"fg": "#FFFFFF", "bg": "#8B5CF633"},
+                    "surprise": {"fg": "#FFFFFF", "bg": "#EC489933"},
+                    "disgust":  {"fg": "#FFFFFF", "bg": "#10B98133"},
+                    "neutral":  {"fg": "#FFFFFF", "bg": "#9CA3AF33"},
                 }
 
                 conf_txt = f" ({conf:.1%})" if isinstance(conf, (int, float)) else ""
@@ -107,16 +115,13 @@ if uploaded:
                     import matplotlib.pyplot as plt
                     import seaborn as sns
 
-                    # Data
                     series = pd.Series(probs).sort_values(ascending=False).head(3)
 
-                    # Theme
                     BG_COLOR = "#001D7E"
                     TEXT_COLOR = "white"
                     PALETTE = ["#7C3AED", "#EC4899", "#F59E0B"]
                     sns.set_theme(style="whitegrid", font_scale=1.0)
 
-                    # --- Bar chart ---
                     fig, ax = plt.subplots(figsize=(6, 4), facecolor=BG_COLOR)
                     ax.set_facecolor(BG_COLOR)
 
@@ -147,7 +152,10 @@ if uploaded:
                     st.pyplot(fig, clear_figure=True)
 
                 else:
-                    st.json(data)  # fallback: show raw payload
+                    st.json(data)
 
             except requests.exceptions.RequestException as e:
                 st.error(f"API call failed: {e}")
+
+
+st.image("media/banner.png", use_container_width=True)
