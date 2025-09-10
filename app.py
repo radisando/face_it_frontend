@@ -10,8 +10,8 @@ apply_theme()
 st.set_page_config(page_title="Face It", page_icon="🤖", layout="wide")
 
 
-st.title("Face It: We've Got Feelings")
-st.image("media/banner.png", use_container_width=False, width=600)
+st.title("😄😢🤢😡😲Face It: We've Got Feelings😄😢🤢😡😲")
+st.image("media/banner.png", use_container_width=True)
 
 
 
