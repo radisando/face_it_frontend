@@ -9,7 +9,11 @@ from theme import apply_theme
 apply_theme()
 st.set_page_config(page_title="Face It", page_icon="🤖", layout="wide")
 
+
 st.title("Face It: We've Got Feelings")
+st.image("media/banner.png", use_container_width=False, width=600)
+
+
 
 
 st.header("👋 Hey there!")
@@ -169,4 +173,4 @@ if uploaded:
             except requests.exceptions.RequestException as e:
                 st.error(f"API call failed: {e}")
 
-st.caption(f"🔗 Working with API at: {PRED_ENDPOINT}")  # dev only, remove in prod
+#st.caption(f"🔗 Working with API at: {PRED_ENDPOINT}")  # dev only, remove in prod
