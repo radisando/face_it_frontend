@@ -8,7 +8,7 @@ apply_theme()
 # Page config
 st.set_page_config(page_title="About Us", page_icon="👭🏻", layout="wide")
 
-st.title("👥 Meet the Team")
+st.title("🌈 Meet the Team")
 st.write("We’re a small group of builders exploring what’s next in AI.")
 
 # --- Team Data ---
