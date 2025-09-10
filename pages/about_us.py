@@ -6,7 +6,7 @@ import base64
 apply_theme()
 
 # Page config
-st.set_page_config(page_title="About Us", page_icon="👥", layout="wide")
+st.set_page_config(page_title="About Us", page_icon="👭🏻", layout="wide")
 
 st.title("👥 Meet the Team")
 st.write("We’re a small group of builders exploring what’s next in AI.")
@@ -16,7 +16,7 @@ TEAM = [
     {
         "name": "Hannah Kiesow-Berger",
         "role": "Team Leader",
-        "bio": "Previously a computational neuroscientist, now learning coding. After completing the Le Wagon bootcamp, I aim to find a job in data science with a focus on health and well-being.",
+        "bio": "Hi, I'm Hannah! My background is in neuroscience and psychology, and I love using AI and analytics to make sense of complex data and turn it into something useful. I’m especially excited about projects that combine tech with a human touch, and I’m always up for learning and collaborating with others.",
         "photo": "media/TeamPics/hannah.png",
         "links": {
             "LinkedIn": "https://www.linkedin.com/in/hannahkiesow/",
