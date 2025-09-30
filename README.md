@@ -4,16 +4,24 @@ Emotion Recognition Web App (face_it) <br>
 🔗 <a href="https://face-it.streamlit.app/" target="_blank">Try the App!</a> <br>
 
 
+
 ## <b>DESCRIPTION</b>
-• As the final project of a Data Science & AI bootcamp at LeWagon, we've developed an AI-powered web application that recognizes human emotions from facial expressions in real time. <br>
-• Collaborated in a 5-person team, focusing on both model performance (deep learning, bias reduction) and scalable deployment (Streamlit frontend + FastAPI backend in Docker). <br>
-• Implemented a pipeline where user-uploaded images are preprocessed (grayscale, resize, normalize) and classified using a Convolutional Neural Network (CNN) and transfer learning with ResNet50. <br>
-• Enhanced explainability & trust with Grad-CAM visual heatmaps and SHAP feature importance to interpret model predictions. <br>
+As the final project of my Data Science & AI bootcamp at Le Wagon, we built an AI-powered web application that recognizes human emotions from facial expressions in real time.
+
+Working in a 5-person team, we focused on two main aspects:
+
+• Model performance → training deep learning models, reducing bias, and improving accuracy.
+
+• Scalable deployment → building a Streamlit frontend and FastAPI backend, fully containerized with Docker.
+
+The pipeline takes an image uploaded by the user, applies preprocessing (grayscale, resize, normalize), and predicts the emotion using a Convolutional Neural Network (CNN) and transfer learning with ResNet50. Our model reached around <b>70% accuracy</b> across seven emotion categories.
+
 
 
 ## <b>GOAL</b>
-• Design an accurate , fair, and explainable AI system, with special focus on reducing misclassifications of subtle emotions (e.g., Fear vs. Disgust). 
-• Deliver a solution that’s interpretable, production-ready, and user-friendly. <br>
+• Design an AI system that is not only accurate, but also fair and explainable.
+
+• We placed special emphasis on reducing misclassifications for subtle emotions (like Fear vs. Disgust), while ensuring the model could run in real-world, production-ready scenarios.. <br>
 
 
 ## <b>DATASET</b>
@@ -23,10 +31,10 @@ Emotion Recognition Web App (face_it) <br>
 😊 Happiness | 😢 Sadness | 😱 Fear | 😡 Anger | 🤢 Disgust | 😲 Surprise | 😐 Neutral <br>
 
 
+
 ## <b>KEY FEATURES</b>
 📸 Upload face images for recognition <br>
 🧹 Automated preprocessing pipeline (grayscale, resize, normalization) <br>
 🤖 Deep learning classification into 7 emotions (CNN + ResNet50) <br>
 🪞 Explainability with Grad-CAM & SHAP <br>
-⚡ Full-stack deployment: Streamlit frontend + FastAPI backend + Docker <br>
-☁️ Cloud-ready architecture for scaling real-time applications <br>
+🌐 Fully deployed as a real-time web application (Streamlit + FastAPI + Docker) <br>
