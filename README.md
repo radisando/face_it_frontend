@@ -1,6 +1,5 @@
 ## <b>PROJECT NAME</b>
-Emotion Recognition Web App (face_it)
-
+Emotion Recognition Web App (face_it):  
 🔗 <a href="https://www.youtube.com/watch?v=ST0ZGqhGCCw" target="_blank">Live Demo</a>  |  🔗 <a href="https://face-it.streamlit.app/" target="_blank">Try the App!</a> <br>
 
 
