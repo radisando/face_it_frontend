@@ -1,19 +1,19 @@
 ## <b>PROJECT NAME</b>
 Emotion Recognition Web App (face_it) <br>
-🔗 <a href="https://face-it.streamlit.app/" target="_blank">Open face_it App</a> <br>
 🔗 <a href="https://www.youtube.com/watch?v=ST0ZGqhGCCw" target="_blank">Live Demo</a>
-
+🔗 <a href="https://face-it.streamlit.app/" target="_blank">Try the App!</a> <br>
 
 
 ## <b>DESCRIPTION</b>
-• Developed an AI-powered web application that recognizes human emotions from facial expressions in real time. <br>
+• As the final project of a Data Science & AI bootcamp at LeWagon, we've developed an AI-powered web application that recognizes human emotions from facial expressions in real time. <br>
 • Collaborated in a 5-person team, focusing on both model performance (deep learning, bias reduction) and scalable deployment (Streamlit frontend + FastAPI backend in Docker). <br>
 • Implemented a pipeline where user-uploaded images are preprocessed (grayscale, resize, normalize) and classified using a Convolutional Neural Network (CNN) and transfer learning with ResNet50. <br>
 • Enhanced explainability & trust with Grad-CAM visual heatmaps and SHAP feature importance to interpret model predictions. <br>
 
 
 ## <b>GOAL</b>
-• Design an accurate, fair, and explainable AI system, with special focus on reducing misclassifications of subtle emotions (e.g., Fear vs. Disgust). Deliver a solution that’s interpretable, production-ready, and user-friendly. <br>
+• Design an accurate , fair, and explainable AI system, with special focus on reducing misclassifications of subtle emotions (e.g., Fear vs. Disgust). 
+• Deliver a solution that’s interpretable, production-ready, and user-friendly. <br>
 
 
 ## <b>DATASET</b>
