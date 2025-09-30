@@ -6,9 +6,7 @@ Emotion Recognition Web App (face_it) <br>
 
 
 ## <b>DESCRIPTION</b>
-As the final project of my Data Science & AI bootcamp at Le Wagon, we built an AI-powered web application that recognizes human emotions from facial expressions in real time.
-
-Working in a 5-person team, we focused on two main aspects:
+As the final project of my Data Science & AI bootcamp at Le Wagon, we built an AI-powered web application that recognizes human emotions from facial expressions in real time. Working in a 5-person team, we focused on two main aspects:
 
 • Model performance → training deep learning models, reducing bias, and improving accuracy.
 
@@ -28,7 +26,7 @@ The pipeline takes an image uploaded by the user, applies preprocessing (graysca
 • FER-2013 dataset (~40k labeled face images, PNG/JPG) <br>
 • Applied augmentation to rebalance underrepresented classes <br>
 • Seven emotion categories: <br>
-😊 Happiness | 😢 Sadness | 😱 Fear | 😡 Anger | 🤢 Disgust | 😲 Surprise | 😐 Neutral <br>
+😊 Happiness  |  😢 Sadness  |  😱 Fear  |  😡 Anger  |  🤢 Disgust  |  😲 Surprise  |  😐 Neutral <br>
 
 
 
